@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
+ <th:block th:fragment="content">
+  <h1 class="mt-4" th:text="${boardname}">게시판1</h1>
+
+  <form action="movie/list" method="get" id="searchFrom">
+   <input type="hidden" name="page" value="1">
+  </form>
+
+  <table class="table table-striped">
+   <thead>
+   <tr>
+    <th scope="col">#</th>
+    <th scope="col">제목</th>
+    <th scope="col">작성자</th>
+    <th scope="col">등록일</th>
+   </tr>
+   </thead>
+   <tbody>
+
+   </tbody>
+  </table>
+  <span>
+   <a th:href="@{/movie/register}">
+       <button type="button" class="btn btn-outline-primary">REGISTER</button>
+   </a>
+  </span>
+  <script th:inline="javascript">
+
+  </script>
+
+ </th:block>
+</th:block>

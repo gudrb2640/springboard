@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="margin-top: 300px">
+    <div class="row">
+        <div class="col-md-7 offset-4">
+            <form th:action="@{/member/register}" type="post" th:object="${member}">
+
+                <p>
+                    <label>ID</label>
+                    <input type="text" th:field="*{mid}"  placeholder="사용할 아이디를 입력하세요"/>
+                </p>
+                <p>
+                    <label>PW</label>
+                    <input type="text" th:field="*{password}" placeholder="사용할 비밀번호를 입력하세요"/>
+                </p>
+
+                <p>
+                    <label>NickName</label>
+                    <input type="text" th:field="*{nickname}" placeholder="사용할 닉넴임을 입력하세요"/>
+                </p>
+
+                <div class="row">
+                    <div class="col-md-7 offset-3">
+                        <button type="button" onclick="location.href='/login'">LOGIN</button>
+                        <button type=submit>REGISTER</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

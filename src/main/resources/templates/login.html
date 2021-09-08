@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="margin-top: 300px">
+  <div class="row">
+    <div class="col-md-7 offset-4">
+      <form >
+
+         <p>
+           <label>ID</label>
+           <input type="text" id="username" name="username" placeholder="아이디를 입력하세요"/>
+         </p>
+
+
+         <p>
+           <label>PW</label>
+           <input type="text" id="password" name="password" placeholder="비밀번호를 입력하세요"/>
+         </p>
+
+        <div class="row">
+          <div class="col-md-7 offset-3" align="rigth">
+            <button type="submit">LOGIN</button>
+            <button type="button" onclick="location.href='/member/register'">REGISTER</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
