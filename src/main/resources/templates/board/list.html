@@ -25,11 +25,17 @@
   </table>
   <span>
    <a th:href="@{/movie/register}">
-       <button type="button" class="btn btn-outline-primary">REGISTER</button>
+       <button type="button" class="btn btn-outline-primary" onclick="location.href='/board/register'">REGISTER</button>
    </a>
   </span>
-  <script th:inline="javascript">
 
+  <script th:inline="javascript">
+  $(window).on('load',function (){
+   var msg = [[${msg}]];
+   if (msg != null) {
+    alert(msg);
+   }
+  })
   </script>
 
  </th:block>

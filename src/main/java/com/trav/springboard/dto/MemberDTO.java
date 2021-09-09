@@ -1,9 +1,13 @@
 package com.trav.springboard.dto;
 
+import com.trav.springboard.entity.Board;
+import com.trav.springboard.entity.Reply;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,4 +22,6 @@ public class MemberDTO {
     private String password;
 
     private String nickname;
+
+    private List<Board> boardList;
 }

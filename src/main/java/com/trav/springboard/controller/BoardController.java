@@ -1,14 +1,20 @@
 package com.trav.springboard.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class PageController {
+@Log4j2
+@RequestMapping("/board")
+@RequiredArgsConstructor
+public class BoardController {
 
-    @GetMapping({"/", "/list"})
+
+    @GetMapping("/list")
     public void getList(String boardname,Model model) {
 
         if(boardname == null)
@@ -16,14 +22,9 @@ public class PageController {
         model.addAttribute("boardname",boardname);
     }
 
-    @GetMapping("/login")
-    public void getLogin() {
+    @GetMapping("/register")
+    public void getRegister(Model model) {
+
 
     }
-
-    @PostMapping("/login")
-    public void postLogin() {
-
-    }
-
 }
