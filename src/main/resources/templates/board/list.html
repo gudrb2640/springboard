@@ -4,30 +4,59 @@
 
 <th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
  <th:block th:fragment="content">
-  <h1 class="mt-4" th:text="${boardname}">게시판1</h1>
+  <h1 class="mt-4" >게시판
+    <span>
+    <a th:href="@{/board/register}">
+        <button type="button" class="btn btn-outline-primary" onclick="location.href='/board/register'">REGISTER</button>
+    </a>
+   </span>
+  </h1>
 
   <form action="movie/list" method="get" id="searchFrom">
    <input type="hidden" name="page" value="1">
   </form>
 
-  <table class="table table-striped">
+  <table class="table table-striped" >
    <thead>
    <tr>
     <th scope="col">#</th>
     <th scope="col">제목</th>
     <th scope="col">작성자</th>
+    <th scope="col">카테고리</th>
     <th scope="col">등록일</th>
    </tr>
    </thead>
    <tbody>
-
+    <tr th:each="list : ${result.dtoList}">
+     <th scope="col" >
+      <a th:href="@{/board/read(bno=${list.bno})}">[[${list.bno}]]</a>
+     </th>
+     <td th:text="${list.title}">Title</td>
+     <td >Writer</td>
+     <td th:text="${list.boardCategory}">BoardCategory</td>
+     <td th:text="${#temporals.format(list.regDate,'yyyy/MM/dd')}">regDate</td>
+    </tr>
    </tbody>
   </table>
-  <span>
-   <a th:href="@{/movie/register}">
-       <button type="button" class="btn btn-outline-primary" onclick="location.href='/board/register'">REGISTER</button>
-   </a>
-  </span>
+
+  <ul class="pagination h-100 justify-content-center align-items-center">
+
+   <li class="page-item" th:if="${result.prev}">
+    <a class="page-link" th:href="@{/board/list(page=${result.start-1})}" tabindex="-1">Previous</a>
+   </li>
+
+   <li th:class="'page-item' + ${result.page == page? 'active' : ''}" th:each="page : ${result.pageList}" >
+    <a class="page-link" th:href="@{/board/list(page=${page})}">
+     [[${page}]]
+    </a>
+   </li>
+
+   <li class="page-item" th:if="${result.next}">
+    <a class="page-link" th:href="@{/board/list/page=${result.end+1}">Next</a>
+   </li>
+
+  </ul>
+
 
   <script th:inline="javascript">
   $(window).on('load',function (){

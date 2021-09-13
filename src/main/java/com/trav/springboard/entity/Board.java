@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude = "writer")
+@ToString(exclude = "member")
 public class Board extends BaseEntity{
 
     @Id
@@ -22,8 +22,12 @@ public class Board extends BaseEntity{
 
     private String content;
 
+    private BoardCategory boardCategory;
+
+
     @ManyToOne
     private Member member;
+
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "board",orphanRemoval = true)
     private List<Reply> replyList = new ArrayList<>();

@@ -13,14 +13,14 @@
             <title>Spring Board</title>
 
             <!-- Bootstrap core CSS -->
-            <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+            <link th:href="@{/libs/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
             <!-- Custom styles for this template -->
             <link th:href="@{/css/simple-sidebar.css}" rel="stylesheet">
 
             <!-- Bootstrap core JavaScript -->
-            <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-            <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+            <script th:src="@{/libs/jquery/jquery.min.js}"></script>
+            <script th:src="@{/libs/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
         </head>
 
@@ -32,13 +32,8 @@
         <div class="bg-light border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">Hyeonggyu</div>
             <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action bg-light">전체</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" >전체</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" th:each="category : ${boardCategorys}" th:text="|${category.description}()|">Dashboard</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->

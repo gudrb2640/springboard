@@ -28,13 +28,4 @@ public class Member extends BaseEntity{
 
     @OneToMany( fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "member",orphanRemoval = true)
     private List<Board> boardList = new ArrayList<>();
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<MemberRole> roleset = new HashSet<>();
-
-    public void addMemberRole(MemberRole memberRole) {
-        roleset.add(memberRole);
-    }
-
 }

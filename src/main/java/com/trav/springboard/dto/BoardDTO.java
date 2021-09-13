@@ -1,9 +1,11 @@
 package com.trav.springboard.dto;
 
 
+import com.trav.springboard.entity.BoardCategory;
 import com.trav.springboard.entity.Reply;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -18,6 +20,21 @@ public class BoardDTO {
 
     private String content;
 
-    private List<Reply> replyList;
+    private BoardCategory boardCategory;
+
+    //멤버
+    private Long mno;
+
+    private String mid;
+
+    private String nickname;
+
+
+    //리뷰 수 jpa의 count()
+    private int replywCnt;
+
+    private LocalDateTime regDate;
+
+    private LocalDateTime modDate;
 
 }

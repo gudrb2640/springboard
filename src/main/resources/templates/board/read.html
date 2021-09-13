@@ -6,30 +6,30 @@
     <th:block th:fragment="content">
         <h1 class="mt-4">Board Register</h1>
 
-        <form th:action="@{/board/register}" th:method="post" th:object="${boardDTO}">
+
             <div class="form-group">
                 <label>Title</label>
-                <input type="text" class="form-control"  th:field="*{title}" placeholder="Enter Title" />
+                <input type="text" class="form-control"  th:field="${boardDTO.title}" placeholder="Enter Title" disabled/>
             </div>
 
             <label>Content</label>
             <div class="form-group">
-                <textarea th:field="*{content}"></textarea>
+                <textarea th:field="${boardDTO.content}" disabled></textarea>
             </div>
-
-<!--            <div>-->
-<!--                <div>Category</div>-->
-<!--                <div th:each="boardCategory : ${boardCategorys}" class="form-check form-check-inline">-->
-<!--                    <input type="radio" th:field="*{boardCategory}" th:value="${boardCategory.name}" class="form-check-input">-->
-<!--                    <label th:for="${#ids.prev('boardCategory')}" th:text="${boardCategory.description}"class="form-check-label">-->
-<!--                        JAVA-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--            </div>-->
 
             <div>
                 <div>Category</div>
-                <select th:field="*{boardCategory}" >
+                <div th:each="boardCategory : ${boardCategorys}" class="form-check form-check-inline">
+                    <input type="radio" th:field="${boardDTO.boardCategory}" th:value="${boardCategory.name}" class="form-check-input" disabled>
+                    <label th:for="${#ids.prev('boardCategory')}" th:text="${boardCategory.description}"class="form-check-label">
+                        JAVA
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <div>Category</div>
+                <select th:field="${boardDTO.boardCategory}" disabled>
                     <option value="">==카테고리==</option>
                     <option th:each="boardCategory : ${boardCategorys}" th:value="${boardCategory.name}"
                     th:text="${boardCategory.description}">JAVA</option>
@@ -38,7 +38,7 @@
 
             <br>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-primary" th:onclick="'location.href=\''+ @{/board/modify(bno=${boardDTO.bno})} + '\''">Modify</button>
 
 
             <style>
@@ -60,7 +60,6 @@
                 }
             </style>
 
-        </form>
     </th:block>
 </th:block>
 
