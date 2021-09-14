@@ -12,7 +12,11 @@ public interface BoardService {
 
     void register(BoardDTO boardDTO);
 
-    BoardDTO getBoardDTO(Long bno);
+    BoardDTO read(Long bno);
+
+    void modify(BoardDTO boardDTO);
+
+    void remove(Long bno);
 
     PageResultDTO<BoardDTO,Board> getList(PageRequestDTO requestDTO);
 
@@ -32,7 +36,7 @@ public interface BoardService {
                 .bno(board.getBno())
                 .title(board.getTitle())
                 .content(board.getContent())
-//                .mid(board.getMember().getMid())
+                .nickname(board.getMember().getNickname())
                 .boardCategory(board.getBoardCategory())
                 .regDate(board.getRegDate())
                 .modDate(board.getModDate())

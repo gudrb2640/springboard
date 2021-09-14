@@ -26,6 +26,6 @@ public class Member extends BaseEntity{
 
     private String password;
 
-    @OneToMany( fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "member",orphanRemoval = true)
-    private List<Board> boardList = new ArrayList<>();
+//    @OneToMany( fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "member",orphanRemoval = true)
+//    private List<Board> boardList = new ArrayList<>();
 }

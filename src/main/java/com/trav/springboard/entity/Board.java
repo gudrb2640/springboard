@@ -25,11 +25,18 @@ public class Board extends BaseEntity{
     private BoardCategory boardCategory;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "board",orphanRemoval = true)
-    private List<Reply> replyList = new ArrayList<>();
+//    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "board",orphanRemoval = true)
+//    private List<Reply> replyList = new ArrayList<>();
 
+
+    public void modify(String title, String content, BoardCategory boardCategory) {
+
+        this.title = title;
+        this.content = content;
+        this.boardCategory = boardCategory;
+    }
 }

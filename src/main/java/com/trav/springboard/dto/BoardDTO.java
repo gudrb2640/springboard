@@ -25,13 +25,10 @@ public class BoardDTO {
     //멤버
     private Long mno;
 
-    private String mid;
-
     private String nickname;
 
-
     //리뷰 수 jpa의 count()
-    private int replywCnt;
+    private int replyCnt;
 
     private LocalDateTime regDate;
 

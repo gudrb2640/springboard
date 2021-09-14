@@ -2,11 +2,10 @@ package com.trav.springboard.controller;
 
 import com.trav.springboard.dto.BoardDTO;
 import com.trav.springboard.dto.PageRequestDTO;
-import com.trav.springboard.entity.Board;
 import com.trav.springboard.entity.BoardCategory;
 import com.trav.springboard.service.BoardService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +27,12 @@ public class BoardController {
         return BoardCategory.values();
     }
 
-    @GetMapping("/list")
-    public void getList(PageRequestDTO pageRequestDTO, Model model) {
 
-        model.addAttribute("result", boardService.getList(pageRequestDTO));
+
+    @GetMapping("/list")
+    public void getList(@ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model) {
+
+        model.addAttribute("result", boardService.getList(requestDTO));
     }
 
     @GetMapping("/register")
@@ -49,15 +50,30 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @GetMapping("/read")
-    public void getRead(Long bno, Model model) {
+    @GetMapping({"/read", "/modify"})
+    public void getRead(Long bno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model) {
 
-        model.addAttribute("boardDTO", boardService.getBoardDTO(bno));
+
+        model.addAttribute("boardDTO", boardService.read(bno));
     }
 
-    @GetMapping("/modify")
-    public void getModify(Long bno, Model model) {
 
-        model.addAttribute("boardDTO", boardService.getBoardDTO(bno));
+    @PostMapping("/modify")
+    public String modify(BoardDTO boardDTO, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, RedirectAttributes redirectAttributes) {
+
+        boardService.modify(boardDTO);
+
+        redirectAttributes.addAttribute("page", requestDTO.getPage());
+        redirectAttributes.addAttribute("bno", boardDTO.getBno());
+
+        return "redirect:/board/read";
+    }
+
+    @GetMapping("/remove")
+    public String remove(Long bno, RedirectAttributes redirectAttributes) {
+
+        boardService.remove(bno);
+
+        return "redirect:/board/list";
     }
 }

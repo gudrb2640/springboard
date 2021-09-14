@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -17,25 +19,27 @@ class ReplyRepositoryTest {
     @Autowired
     private ReplyRepository replyRepository;
 
-    @Transactional
+
     @Test
     void testInsert() {
 
-        Board board = Board.builder()
-                .title("test")
-                .content("testContent")
-                .member(Member.builder().mid("gudrb").build())
-                .build();
+        IntStream.rangeClosed(1,300).forEach(i ->{
 
-        Reply reply = Reply.builder()
-                .text("test")
-                .board(board)
-                .replyer(board.getMember().getMid())
-                .build();
+            Long bno = (long)(((Math.random()*100)+1));
+            Long mno = (long)(((Math.random()*100)+1));
+            Member member = Member.builder().mno(mno).build();
+            Board board = Board.builder().bno(bno).build();
 
-        replyRepository.save(reply);
 
-        Assertions.assertThat(reply).isEqualTo(replyRepository.getById(reply.getRno()));
-        System.out.println(reply);
+            Reply reply = Reply.builder()
+                    .text("replyTest"+i)
+                    .board(board)
+                    .member(member)
+                    .build();
+
+            replyRepository.save(reply);
+
+
+        });
     }
 }

@@ -29,30 +29,50 @@
    <tbody>
     <tr th:each="list : ${result.dtoList}">
      <th scope="col" >
-      <a th:href="@{/board/read(bno=${list.bno})}">[[${list.bno}]]</a>
+      <a th:href="@{/board/read(bno=${list.bno},page=${result.page},type=${requestDTO.type},keyword=${requestDTO.keyword})}">[[${list.bno}]]</a>
      </th>
-     <td th:text="${list.title}">Title</td>
-     <td >Writer</td>
+     <td th:text="|${list.title}(${list.boardCategory})|">Title</td>
+     <td th:text="${list.nickname}">Writer</td>
      <td th:text="${list.boardCategory}">BoardCategory</td>
      <td th:text="${#temporals.format(list.regDate,'yyyy/MM/dd')}">regDate</td>
     </tr>
    </tbody>
   </table>
+  <form th:action="@{/board/list}" method="get" id="searchForm">
+   <div class="input-group">
+    <input type="hidden" name="page" value="1">
+    <div class="input-group-prepend">
+     <select class="custom-select" name="type">
+      <option value="" th:selected="${requestDTO.type == null}">-------------</option>
+      <option value="t" th:selected="${requestDTO.type == 't'}">제목</option>
+      <option value="c" th:selected="${requestDTO.type == 'c'}">내용</option>
+      <option value="w" th:selected="${requestDTO.type == 'w'}">작성자</option>
+      <option value="tc" th:selected="${requestDTO.type == 'tc'}">제목+내용</option>
+      <option value="tcw" th:selected="${requestDTO.type == 'tcw'}">제목+내용+제목</option>
+     </select>
+    </div>
+    <input class="form-control" name="keyword" th:value="${requestDTO.keyword}">
+    <div class="input-group-prepend" id="button-addon4">
+     <button class="btn btn-outline-secondary btn-search" type="button">Search</button>
+     <button class="btn btn-outline-secondary btn-clear" type="button">Clear</button>
+    </div>
+   </div>
+  </form>
 
   <ul class="pagination h-100 justify-content-center align-items-center">
 
    <li class="page-item" th:if="${result.prev}">
-    <a class="page-link" th:href="@{/board/list(page=${result.start-1})}" tabindex="-1">Previous</a>
+    <a class="page-link" th:href="@{/board/list(page=${result.start-1},type=${requestDTO.type},keyword=${requestDTO.keyword})}" tabindex="-1">Previous</a>
    </li>
 
    <li th:class="'page-item' + ${result.page == page? 'active' : ''}" th:each="page : ${result.pageList}" >
-    <a class="page-link" th:href="@{/board/list(page=${page})}">
+    <a class="page-link" th:href="@{/board/list(page=${page},type=${requestDTO.type},keyword=${requestDTO.keyword})}">
      [[${page}]]
     </a>
    </li>
 
    <li class="page-item" th:if="${result.next}">
-    <a class="page-link" th:href="@{/board/list/page=${result.end+1}">Next</a>
+    <a class="page-link" th:href="@{/board/list(page=${result.end+1},type=${requestDTO.type},keyword=${requestDTO.keyword})}">Next</a>
    </li>
 
   </ul>
@@ -65,6 +85,16 @@
     alert(msg);
    }
   })
+  var searchForm = $("#searchForm");
+
+  $('.btn-search').click(function(e){
+   searchForm.submit();
+  })
+
+  $('.btn-clear').click(function (e) {
+   searchForm.empty().submit();
+  });
+
   </script>
 
  </th:block>

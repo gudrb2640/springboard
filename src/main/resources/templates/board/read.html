@@ -17,15 +17,15 @@
                 <textarea th:field="${boardDTO.content}" disabled></textarea>
             </div>
 
-            <div>
-                <div>Category</div>
-                <div th:each="boardCategory : ${boardCategorys}" class="form-check form-check-inline">
-                    <input type="radio" th:field="${boardDTO.boardCategory}" th:value="${boardCategory.name}" class="form-check-input" disabled>
-                    <label th:for="${#ids.prev('boardCategory')}" th:text="${boardCategory.description}"class="form-check-label">
-                        JAVA
-                    </label>
-                </div>
-            </div>
+<!--            <div>-->
+<!--                <div>Category</div>-->
+<!--                <div th:each="boardCategory : ${boardCategorys}" class="form-check form-check-inline">-->
+<!--                    <input type="radio" th:field="${boardDTO.boardCategory}" th:value="${boardCategory.name}" class="form-check-input" disabled>-->
+<!--                    <label th:for="${#ids.prev('boardCategory')}" th:text="${boardCategory.description}"class="form-check-label">-->
+<!--                        JAVA-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <div>
                 <div>Category</div>
@@ -38,7 +38,8 @@
 
             <br>
 
-            <button type="button" class="btn btn-primary" th:onclick="'location.href=\''+ @{/board/modify(bno=${boardDTO.bno})} + '\''">Modify</button>
+            <button type="button" class="btn btn-primary" th:onclick="'location.href=\''+ @{/board/modify(bno=${boardDTO.bno},page=${requestDTO.page},type=${requestDTO.type},keyword=${requestDTO.keyword})} + '\''">Modify</button>
+            <button type="button" class="btn btn-primary" th:onclick="'location.href=\''+ @{/board/list(page=${requestDTO.page},type=${requestDTO.type},keyword=${requestDTO.keyword})} + '\''">List</button>
 
 
             <style>
