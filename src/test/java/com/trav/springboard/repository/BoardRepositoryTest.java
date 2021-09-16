@@ -17,8 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -51,22 +50,6 @@ class BoardRepositoryTest {
     }
 
 
-    @Transactional
-    @Test
-    void getList() {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .page(1)
-                .size(10)
-                .build();
-
-        PageResultDTO<BoardDTO, Board> resultDTO = boardService.getList(pageRequestDTO);
-
-        for (BoardDTO boardDTO :
-                resultDTO.getDtoList()) {
-            System.out.println(boardDTO);
-        }
-    }
-
     @Test
     void querydsl() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
@@ -87,7 +70,7 @@ class BoardRepositoryTest {
         builder.and(exAll);
         builder.and(qBoard.bno.gt(0L));
 
-        Page<Board> result = boardRepository.findAll(builder, pageable);
+        Page<Board> result = boardRepository.findAll(pageable);
         Stream<Board> boardStream = result.get();
         boardStream.forEach(board -> {
             System.out.println(board.getTitle());
@@ -115,18 +98,38 @@ class BoardRepositoryTest {
         });
     }
 
+//    @Test
+//    void getBoardWithReplyCount() {
+//
+//        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno"));
+//
+//        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+//
+//        result.get().forEach(row ->{
+//            Object[] arr = (Object[]) row;
+//
+//            System.out.println(Arrays.toString(arr));
+//        });
+//    }
+
+
     @Test
-    void getBoardWithReplyCount() {
+    void testSearchPage() {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("bno"));
+        boardRepository.searchPage("t","1",BoardCategory.JAVA,pageable);
+    }
 
-        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+    @Test
+    void getBoardCategory() {
 
-        result.get().forEach(row ->{
-            Object[] arr = (Object[]) row;
-
-            System.out.println(Arrays.toString(arr));
+        List<Object[]> result = boardRepository.getBoardCategory();
+        Map<BoardCategory, Long> map = new HashMap<>();
+        result.forEach(arr ->{
+            map.put((BoardCategory) arr[0], (Long) arr[1]);
         });
+
+
     }
 
 }

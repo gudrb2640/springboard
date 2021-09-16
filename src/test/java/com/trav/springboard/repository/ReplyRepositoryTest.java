@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,5 +42,17 @@ class ReplyRepositoryTest {
 
 
         });
+    }
+
+    @Test
+    void getReplyList() {
+
+        Board board = Board.builder()
+                .bno(24L)
+                .build();
+
+        List<Reply> result = replyRepository.getReplyByBoardOrderByRno(board);
+
+       result.forEach(System.out::println);
     }
 }

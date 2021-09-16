@@ -6,16 +6,15 @@
     <th:block th:fragment="content">
         <h1 class="mt-4">Board Register</h1>
 
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control"  th:field="${boardDTO.title}" placeholder="Enter Title" disabled/>
+        </div>
 
-            <div class="form-group">
-                <label>Title</label>
-                <input type="text" class="form-control"  th:field="${boardDTO.title}" placeholder="Enter Title" disabled/>
-            </div>
-
-            <label>Content</label>
-            <div class="form-group">
-                <textarea th:field="${boardDTO.content}" disabled></textarea>
-            </div>
+        <label>Content</label>
+        <div class="form-group">
+            <textarea th:field="${boardDTO.content}" disabled></textarea>
+        </div>
 
 <!--            <div>-->
 <!--                <div>Category</div>-->
@@ -27,39 +26,153 @@
 <!--                </div>-->
 <!--            </div>-->
 
-            <div>
-                <div>Category</div>
-                <select th:field="${boardDTO.boardCategory}" disabled>
-                    <option value="">==카테고리==</option>
-                    <option th:each="boardCategory : ${boardCategorys}" th:value="${boardCategory.name}"
-                    th:text="${boardCategory.description}">JAVA</option>
-                </select>
+        <div>
+            <div>Category</div>
+            <select th:field="${boardDTO.boardCategory}" disabled>
+                <option value="">==카테고리==</option>
+                <option th:each="boardCategory : ${boardCategorys}" th:value="${boardCategory.name}"
+                th:text="${boardCategory.description}">JAVA</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Writer</label>
+            <input type="text" class="form-control"  th:field="${boardDTO.nickname}" placeholder="Enter Title" disabled/>
+        </div>
+
+        <div class="form-group">
+            <label>RegDate</label>
+            <input type="text" class="form-control"  th:field="${boardDTO.regDate}" placeholder="Enter Title" disabled/>
+        </div>
+
+        <div class="form-group">
+            <label>ModDate</label>
+            <input type="text" class="form-control"  th:field="${boardDTO.ModDate}" placeholder="Enter Title" disabled/>
+        </div>
+
+        <br>
+
+        <button type="button" class="btn btn-primary" th:onclick="'location.href=\''+ @{/board/modify(bno=${boardDTO.bno},page=${requestDTO.page},type=${requestDTO.type},keyword=${requestDTO.keyword},
+                                                                                        boardCategory=${requestDTO.boardCategory})} + '\''">Modify</button>
+        <button type="button" class="btn btn-primary" th:onclick="'location.href=\''+ @{/board/list(page=${requestDTO.page},type=${requestDTO.type},keyword=${requestDTO.keyword},
+                                                                                        boardCategory=${requestDTO.boardCategory})} + '\''">List</button>
+
+        <br>
+        <div class="mt-4">
+            <h4 class="badge badge-secondary replyCount" th:text="|Reply ${boardDTO.replyCnt}|"></h4>
+
+
+            <div class="list-group replyList">
+
             </div>
+        </div>
 
-            <br>
+        <script th:inline="javascript">
+            $(document).ready(function () {
 
-            <button type="button" class="btn btn-primary" th:onclick="'location.href=\''+ @{/board/modify(bno=${boardDTO.bno},page=${requestDTO.page},type=${requestDTO.type},keyword=${requestDTO.keyword})} + '\''">Modify</button>
-            <button type="button" class="btn btn-primary" th:onclick="'location.href=\''+ @{/board/list(page=${requestDTO.page},type=${requestDTO.type},keyword=${requestDTO.keyword})} + '\''">List</button>
+                var listGroup = $(".replyList");
+                var bno = [[${boardDTO.bno}]];
 
 
-            <style>
+                function formatTime(str){
 
-                .form-control{
-                    width: 400px;
+                    var date =new Date(str);
+
+                    return date.getFullYear()+'/'+
+                        (date.getMonth()+1)+'/'+
+                        date.getDate()+'/' +
+                        date.getHours()+':'+
+                        date.getMinutes();
                 }
-                textarea {
-                    resize: none;
-                    border: 1px solid #ced4da;
-                    border-radius: .25rem;
-                    height: 100px;
-                    width: 400px;
+
+                function loadJSONDATA(){
+                    $.getJSON('/reply/board/' + bno, function (arr) {
+
+                        console.log(arr);
+
+                        var str = "";
+
+                        $(".replyCount").html(" Reply " + arr.length);
+
+                        $.each(arr,function (idx,reply){
+                            console.log(reply);
+
+                            str += '<div class="card-body" >' +
+                                '       <h6 class="card-subtitle mb-2 text-muted">'+reply.replyer+'</h6>' +
+                                '       <textarea class="replytext" disabled>'+reply.text+'</textarea>' +
+                                '       <div>'+ formatTime(reply.regDate)+ '&nbsp;&nbsp;' +
+                                '           <h4 class="badge badge-secondary removeReply" data-rno="'+reply.rno+'"> Remove </h4>' +
+                                '       </div>' +
+                                '</div>';
+                        })
+                        str +='<div class="mt-4"> ' +
+                                '<div class="form-group">' +
+                            '   <textarea class="replytext"></textarea>' +
+                            '   <h4 class="badge badge-secondary addReply" >add Reply </h4>' +
+                            '   </div>' +
+                            '</div>';
+                        listGroup.html(str);
+                    });
                 }
-                select {
-                    width: 20%;
-                    border: 1px solid #ced4da;
-                    border-radius: .25rem;
-                }
-            </style>
+
+                $(".replyCount").click(function () {
+                    loadJSONDATA();
+                });
+
+                $(document).on("click",'.addReply',function () {
+
+                    var reply = {
+                        bno: bno,
+                        text: $(".replytext").val(),
+                    }
+
+                    $.ajax({
+                        url:'/reply',
+                        method: 'post',
+                        data: JSON.stringify(reply),
+                        contentType:'application/json; charset=utf-8',
+                        dataType: 'text',
+                       success: function (){
+                           alert("댓글이 등록되었습니다.");
+                           loadJSONDATA();
+                        }
+                    })
+                });
+
+                $(document).on("click",'.removeReply',function () {
+                    var rno = $(this).data("rno");
+
+                    $.ajax({
+                        url: '/reply/'+rno,
+                        method: 'delete',
+                        success:(function() {
+                            alert("댓글이 삭제되었습니다.");
+                            loadJSONDATA();
+                        })
+                    })
+
+                });
+
+            });
+        </script>
+        <style>
+
+            .form-control{
+                width: 400px;
+            }
+            textarea {
+                resize: none;
+                border: 1px solid #ced4da;
+                border-radius: .25rem;
+                height: 100px;
+                width: 400px;
+            }
+            select {
+                width: 20%;
+                border: 1px solid #ced4da;
+                border-radius: .25rem;
+            }
+        </style>
 
     </th:block>
 </th:block>

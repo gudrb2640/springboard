@@ -1,5 +1,6 @@
 package com.trav.springboard.dto;
 
+import com.trav.springboard.entity.BoardCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class PageRequestDTO {
     private int size;
     private String type;
     private String keyword;
+    private BoardCategory boardCategory;
 
 
     public PageRequestDTO() {

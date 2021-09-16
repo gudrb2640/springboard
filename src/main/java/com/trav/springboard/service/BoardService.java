@@ -4,9 +4,11 @@ import com.trav.springboard.dto.BoardDTO;
 import com.trav.springboard.dto.PageRequestDTO;
 import com.trav.springboard.dto.PageResultDTO;
 import com.trav.springboard.entity.Board;
+import com.trav.springboard.entity.BoardCategory;
 import com.trav.springboard.entity.Member;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BoardService {
 
@@ -18,7 +20,8 @@ public interface BoardService {
 
     void remove(Long bno);
 
-    PageResultDTO<BoardDTO,Board> getList(PageRequestDTO requestDTO);
+    Map<BoardCategory,Long> getBoardCategory();
+    PageResultDTO<BoardDTO,Object[]> getList(PageRequestDTO requestDTO);
 
     default Board dtoToEntity(BoardDTO boardDTO) {
 
@@ -30,16 +33,17 @@ public interface BoardService {
                 .build();
     }
 
-    default BoardDTO entityToDTO(Board board) {
+    default BoardDTO entityToDTO(Board board,Member member,Long replyCnt) {
 
         return BoardDTO.builder()
                 .bno(board.getBno())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .nickname(board.getMember().getNickname())
+                .nickname(member.getNickname())
                 .boardCategory(board.getBoardCategory())
                 .regDate(board.getRegDate())
                 .modDate(board.getModDate())
+                .replyCnt(replyCnt.intValue())
                 .build();
     }
 

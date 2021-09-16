@@ -27,13 +27,12 @@
     <body>
 
     <div class="d-flex" id="wrapper">
-
         <!-- Sidebar -->
         <div class="bg-light border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">Hyeonggyu</div>
             <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action bg-light" >전체</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light" th:each="category : ${boardCategorys}" th:text="|${category.description}()|">Dashboard</a>
+                <a th:href="@{/board/list}" class="list-group-item list-group-item-action bg-light" >전체</a>
+                <a th:href="@{/board/list(boardCategory=${category.key})}" class="list-group-item list-group-item-action bg-light" th:each="category : ${boardCategoryCnt}" th:text="|${category.key}(${category.value})|">Dashboard</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->

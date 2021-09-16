@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Map;
+
 @Controller
 @Log4j2
 @RequestMapping("/board")
@@ -25,6 +27,11 @@ public class BoardController {
     @ModelAttribute("boardCategorys")
     public BoardCategory[] boardCategories() {
         return BoardCategory.values();
+    }
+
+    @ModelAttribute("boardCategoryCnt")
+    public Map<BoardCategory,Long> boardCategoryCnt(){
+        return boardService.getBoardCategory();
     }
 
 
@@ -70,9 +77,11 @@ public class BoardController {
     }
 
     @GetMapping("/remove")
-    public String remove(Long bno, RedirectAttributes redirectAttributes) {
+    public String remove(Long bno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, RedirectAttributes redirectAttributes) {
 
         boardService.remove(bno);
+
+        redirectAttributes.addAttribute("page", requestDTO.getPage());
 
         return "redirect:/board/list";
     }
