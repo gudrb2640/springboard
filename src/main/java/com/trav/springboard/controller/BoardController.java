@@ -8,12 +8,14 @@ import lombok.extern.log4j.Log4j2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -49,7 +51,27 @@ public class BoardController {
     }
 
     @PostMapping("/register")
-    public String postRegister(BoardDTO boardDTO, RedirectAttributes redirectAttributes) {
+    public String postRegister(BoardDTO boardDTO, RedirectAttributes redirectAttributes, Model model) {
+
+
+        //검증 오류 결과 보관
+        Map<String, String> errors = new HashMap<>();
+
+        //검증 로직
+        if(!StringUtils.hasText(boardDTO.getTitle())){
+            errors.put("title","제목은 필수입니다");
+        }
+        if(boardDTO.getBoardCategory() == null){
+            errors.put("boardCategory", "카테고리를 선택은 필수입니다.");
+        }
+
+        if (!errors.isEmpty()) {
+            log.info("errors={}",errors);
+            model.addAttribute("errors", errors);
+
+            return "/board/register";
+        }
+
 
         boardService.register(boardDTO);
         redirectAttributes.addFlashAttribute("msg", "게시글이 정상적으로 등록됐습니다.");

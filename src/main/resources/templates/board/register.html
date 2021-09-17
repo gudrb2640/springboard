@@ -10,6 +10,9 @@
             <div class="form-group">
                 <label>Title</label>
                 <input type="text" class="form-control"  th:field="*{title}" placeholder="Enter Title" />
+                <div th:if="${errors?.containsKey('title')}">
+                    <p class="ui-state-error-text" style="color: red" th:text="${errors['title']}"></p>
+                </div>
             </div>
 
             <label>Content</label>
@@ -34,6 +37,9 @@
                     <option th:each="boardCategory : ${boardCategorys}" th:value="${boardCategory.name}"
                     th:text="${boardCategory.description}">JAVA</option>
                 </select>
+            </div>
+            <div th:if="${errors?.containsKey('boardCategory')}">
+                <p class="ui-state-error-text" style="color: red" th:text="${errors['boardCategory']}"></p>
             </div>
 
             <br>
